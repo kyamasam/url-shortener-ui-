@@ -18,7 +18,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const $emit = defineEmits(['redirected'])
 const shortCode = route.params.shortCode
-const backendUrl = 'http://127.0.0.1:8001/api/'
+const backendUrl = 'url-shortener-api-d7g9.onrender.com/api/'
 
 onMounted(() => {
   // window.location.href = 'https://www.youtube.com'
@@ -27,7 +27,7 @@ onMounted(() => {
     .get(backendUrl + 'url-view/' + shortCode)
     .then((resp) => {
       setTimeout(() => {
-        $emit('redirected');
+        $emit('redirected')
         window.location.href = resp?.data?.long_url
       }, 1000)
       console.log('resp', resp?.data?.long_url)

@@ -1,15 +1,5 @@
 # url-shortener
-
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
+This is a url shortener in vue js connected to a django rest api
 ## Project Setup
 
 ```sh
@@ -55,3 +45,7 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+# View The Api 
+
+https://github.com/kyamasam/url-shortener-api

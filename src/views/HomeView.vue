@@ -188,7 +188,7 @@ const short_code = ref(null)
 const $toast = useToast()
 
 const shortenedUrlSlug = ref(null)
-const backendUrl = 'http://127.0.0.1:8001/api/'
+const backendUrl = 'url-shortener-api-d7g9.onrender.com/api/'
 function getFullShortUrl(url) {
   return window.location.origin + '/' + url
 }
