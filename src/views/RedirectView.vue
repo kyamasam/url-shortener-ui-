@@ -18,7 +18,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const $emit = defineEmits(['redirected'])
 const shortCode = route.params.shortCode
-const backendUrl = 'https://url-shortener-api-d7g9.onrender.com/api/'
+const backendUrl = 'https://kyamasam.pythonanywhere.com/api/'
 
 onMounted(() => {
   // window.location.href = 'https://www.youtube.com'
