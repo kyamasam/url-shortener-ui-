@@ -55,12 +55,20 @@
           />
         </div>
         <div class="flex flex-col justify-start w-full py-4 gap-4">
-          <p>Do you want a custom short code ?</p>
-          <input
-            class="rounded-sm px-2 py-2 ring-blue-200 border-blue-100"
+          <label class="inline-flex items-center cursor-pointer">
+            <input v-model="isCustomUrl" type="checkbox" class="sr-only peer" />
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+            ></div>
+            <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >I want a custom short code</span
+            >
+          </label>
+          <!-- <input
+            class="rounded-sm border-4 border-blue-400 px-2 py-2 ring-blue-200 border-blue-100"
             v-model="isCustomUrl"
             type="checkbox"
-          />
+          /> -->
         </div>
         <div v-if="isCustomUrl" class="flex items-start flex-col w-full gap-4">
           <p>Custom Short Url</p>
@@ -72,98 +80,111 @@
         </div>
 
         <button
-          :class="loadingShorteningUrl ? 'disabled bg-blue-100 cursor-wait' : ''"
-          class="rounded-md bg-blue-500 px-4 py-2 text-white"
+          :disabled="loadingShorteningUrl"
+          :class="loadingShorteningUrl ? ' bg-blue-300 cursor-wait' : 'bg-blue-500'"
+          class="rounded-md px-4 py-2 text-white"
           @click="shortenUrl"
         >
-          Shorten url
+          <span v-if="loadingShorteningUrl">Loading</span> <span v-else>Shorten url</span>
         </button>
         <!-- </form> -->
 
         <div class="flex flex-col gap-4" v-if="shortenedUrlSlug">
           <div class="flex flex-row gap-2 rounded-md border py-4 px-2">
-            <div class="flex flex-col gap-2">
-              <p class="text-text sm text-blue-400">
-                {{ getFullShortUrl(shortenedUrlSlug) }}
-              </p>
-              <p>{{ shortenerResponse?.long_url }}</p>
-            </div>
-            <div @click="copyText(getFullShortUrl(shortenedUrlSlug))" class="cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="white"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
-                />
-              </svg>
+            <div class="flex flex-col gap-2 w-full">
+              <div class="flex justify-between">
+                <p class="text-text sm text-blue-400">
+                  {{ getFullShortUrl(shortenedUrlSlug) }}
+                </p>
+                <div @click="copyText(getFullShortUrl(shortenedUrlSlug))" class="cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="white"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <p class="truncate">{{ shortenerResponse?.long_url }}</p>
             </div>
           </div>
         </div>
       </div>
       <div
-        class="flex flex-col md:w-auto w-full h-full items-center justify-start bg-white p-4 rounded-md"
+        class="flex flex-col md:w-1/3 w-full h-full items-center justify-start bg-white p-4 rounded-md"
       >
-        <div class="flex flex-col gap-4">
-          <button class="rounded-md bg-blue-500 px-4 py-2 text-white" @click="fetchUrls">
-            <span v-if="fetchUrlsClicked">Refresh </span>
+        <div class="flex flex-col gap-4 w-full h-full">
+          <button
+            :disabled="loadingFetchUrls"
+            :class="loadingFetchUrls ? 'bg-blue-400' : 'bg-blue-500'"
+            class="rounded-md px-4 py-2 text-white"
+            @click="fetchUrls"
+          >
+            <span v-if="fetchUrlsClicked">
+              <span v-if="loadingFetchUrls">Loading...</span><span v-else>Refresh</span>
+            </span>
             <span v-else>Show My Urls</span>
           </button>
+          <div v-if="!links?.length" class="w-full h-full flex justify-center items-center">
+            <p>Your shortened urls will show up here</p>
+          </div>
 
           <Loader v-if="loadingFetchUrls"></Loader>
-          <div class="flex flex-col overflow-scroll gap-4">
-            <div v-if="links?.length" class="">
-              <div class="w-full rounded-md overflow-scroll h-80 py-4 px-2 gap-12">
-                <div
-                  class="border wb-white mb-4 gap-2 rounded-md py-2 px-4 flex flex-col"
-                  v-for="item in links"
-                  :key="item.id"
-                >
-                  <div class="flex flex-row items-center justify-between gap-32">
-                    <div class="flex flex-row gap-2">
-                      <a
-                        target="_blank"
-                        class="text-blue-500"
-                        :href="getFullShortUrl(item?.short_code)"
-                        >{{ getFullShortUrl(item?.short_code) }}</a
+          <div class="flex flex-col overflow-y-scroll gap-4">
+            <div v-if="links?.length" class="rounded-md overflow-scroll h-80 py-4 px-2 gap-12">
+              <div
+                class="border wb-white mb-4 gap-2 rounded-md py-2 px-4 flex flex-col"
+                v-for="item in links"
+                :key="item.id"
+              >
+                <div class="flex flex-row items-center justify-between md:gap-32">
+                  <div class="flex flex-row gap-2">
+                    <a
+                      target="_blank"
+                      class="text-blue-500 truncate"
+                      :href="getFullShortUrl(item?.short_code)"
+                      >{{ getFullShortUrl(item?.short_code) }}</a
+                    >
+                    <div
+                      title="copy link"
+                      @click="copyText(getFullShortUrl(item?.short_code))"
+                      class="cursor-pointer"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="white"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-6"
                       >
-                      <div
-                        title="copy link"
-                        @click="copyText(getFullShortUrl(item?.short_code))"
-                        class="cursor-pointer"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="white"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="size-6"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
-                          />
-                        </svg>
-                      </div>
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                        />
+                      </svg>
                     </div>
-
-                    <div class="flex flex-col gap-2 h-full">{{ item?.visits_count }} Visits</div>
                   </div>
 
-                  <div class="flex flex-row justify-between">
-                    <a target="_blank" :href="item?.long_url">{{ item?.long_url }}</a>
-                    <span class="text-gray-700 text-sm">{{
-                      new Date(item?.created_at)?.toLocaleDateString()
-                    }}</span>
-                  </div>
+                  <div class="flex flex-col gap-2 h-full">{{ item?.visits_count }} Visits</div>
+                </div>
+
+                <div class="flex flex-row justify-between">
+                  <a target="_blank" class="truncate" :href="item?.long_url">{{
+                    item?.long_url
+                  }}</a>
+                  <span class="text-gray-700 text-sm">{{
+                    new Date(item?.created_at)?.toLocaleDateString()
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -171,7 +192,7 @@
         </div>
       </div>
     </div>
-    <div class="text-blue-600 cursor-pointer absolute bottom-10">
+    <div class="text-blue-600 cursor-pointer absolute bottom-0 md:bottom-10">
       <a target="_blank" href="https://acceptance.co.ke">with love acceptance.co.ke</a>
     </div>
   </main>
@@ -225,7 +246,11 @@ function shortenUrl() {
     .post(backendUrl + 'url-view/', data)
     .then((resp) => {
       loadingShorteningUrl.value = false
-
+      isCustomUrl.value = false
+      short_code.value = null
+      long_url.value = ''
+      // reset values
+      loadingShorteningUrl.value = false
       console.log('success')
       $toast.open({
         message: 'Success! Your Url Was shortened',

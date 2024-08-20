@@ -29,7 +29,7 @@ onMounted(() => {
       setTimeout(() => {
         $emit('redirected')
         window.location.href = resp?.data?.long_url
-      }, 1000)
+      }, 100)
       console.log('resp', resp?.data?.long_url)
     })
     .catch((err) => {
